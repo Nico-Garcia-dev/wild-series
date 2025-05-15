@@ -20,3 +20,8 @@ app
   .on("error", (err: Error) => {
     console.error("Error:", err.message);
   });
+
+// Server routes:
+app.get("/", (req, res) => {
+  res.json({ message: "welcome to wild series !" });
+});
