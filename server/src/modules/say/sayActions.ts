@@ -24,7 +24,29 @@ const programs = [
 ];
 
 const browse: RequestHandler = (req, res) => {
-  res.json(programs);
+  const { q } = req.query;
+
+  if (q != null) {
+    const filteredProgram = programs.filter((program) =>
+      program.synopsis.includes(q as string),
+    );
+    res.json(filteredProgram);
+  } else {
+    res.json(programs);
+  }
 };
 
-export default { browse };
+const read: RequestHandler = (req, res) => {
+  const { id } = req.params;
+  const parsedId = Number(id);
+
+  const programById = programs.find((p) => p.id === parsedId);
+
+  if (programById) {
+    res.json(programById);
+    return;
+  }
+  res.status(404).json({ message: "Not found" });
+};
+
+export default { browse, read };
