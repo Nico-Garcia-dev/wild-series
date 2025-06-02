@@ -1,5 +1,10 @@
 import type { RequestHandler } from "express";
 
+type CatType = {
+  id: number;
+  name: string;
+};
+
 const categories = [
   {
     id: 1,
@@ -12,7 +17,12 @@ const categories = [
 ];
 
 const browse: RequestHandler = (req, res) => {
-  res.json(categories);
+  const { cat = "" } = req.query as Record<string, string>;
+
+  const filteredCategory = categories.filter((c) =>
+    c.name.trim().toLowerCase().includes(cat.trim().toLowerCase()),
+  );
+  res.json(filteredCategory);
 };
 
 const read: RequestHandler = (req, res) => {
