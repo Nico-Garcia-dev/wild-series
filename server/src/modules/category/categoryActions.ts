@@ -1,4 +1,5 @@
 import type { RequestHandler } from "express";
+import CategoryRepository from "./categoryRepository";
 
 type CatType = {
   id: number;
@@ -16,13 +17,9 @@ const categories = [
   },
 ];
 
-const browse: RequestHandler = (req, res) => {
-  const { cat = "" } = req.query as Record<string, string>;
-
-  const filteredCategory = categories.filter((c) =>
-    c.name.trim().toLowerCase().includes(cat.trim().toLowerCase()),
-  );
-  res.json(filteredCategory);
+const browse: RequestHandler = async (req, res) => {
+  const categoryFromDB = await CategoryRepository.readAll();
+  res.json(categoryFromDB);
 };
 
 const read: RequestHandler = (req, res) => {
